@@ -1,0 +1,458 @@
+/* General Layout */
+.tracker-container {
+    padding: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    min-height: fit-content;
+    
+    box-sizing: border-box;
+  }
+  
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #d1d5db;
+    padding-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+   
+  }
+  
+  .logo-image {
+    height: 40px;
+    object-fit: contain;
+  }
+  
+  .icon {
+    margin-top: 5px;
+    padding-left: 10px;
+    width: 24px;
+    height: 24px;
+    color: #4b5563;
+  }
+  
+  .icon-small {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  
+  /* Tabs */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .tab {
+    flex: 1 1 auto;
+    padding: 10px 12px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    border: none;
+    text-align: center;
+    font-weight: 600;
+    color: #1f2937;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .tab:hover {
+    background-color: #5197f3;
+  }
+  .fixed-tabs,
+.fixed-table {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.fixed-tabs button,
+.fixed-table span {
+  flex: 1 0 auto;
+  text-align: center;
+  padding: 10px;
+}
+  /* Data Display */
+  .table-header,
+  .data-row {
+    
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  
+    margin-top: 10px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .table-header {
+    font-weight: bold;
+    background-color: #e0e7ff;
+  }
+  
+  .data-row {
+    background-color: #fef9c3;
+  }
+  
+  /* Bottom Navigation */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #3b82f6;
+    color: white;
+    border-top: 1px solid #2563eb;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    text-align: center;
+    font-size: 12px;
+    padding: 10px 0;
+    transition: background-color 0.3s ease;
+  }
+  
+  .bottom-nav div {
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .bottom-nav div:hover {
+    color: #3b82f6;
+    background-color: #ffffff;
+  }
+  .button-nav div:active{
+    color: #3b82f6;
+    background-color: #ffffff;
+  }
+  .search-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin-right: 10px;
+    margin-top: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .bottom-icon {
+    font-size: 1.5rem;
+  }
+  .search-input {
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+  
+  .search-icon {
+    margin-left: 4px;
+    color: #4b5563;
+  }
+  .fab-button {
+    position: fixed;
+    bottom: 130px;
+    right: 40px; /* <- updated from center to right */
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fab-button:hover {
+    background-color: #2563eb;
+  }
+  
+  .fab-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+ /* Hide sidebar completely when not shown */
+.sidebar {
+  display: none; /* Hide by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 20px;
+  flex-direction: column;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Show sidebar when 'show' class is applied */
+.sidebar.show {
+  display: flex; /* Reveal the sidebar */
+}
+.close-btn {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Sidebar Buttons */
+.category-btn {
+  background-color: #f5f5f5;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px 0;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.category-btn:hover {
+  background-color: #eaeaea;
+}
+
+.records-container {
+  max-height: 800px; /* Adjust height as needed */
+  overflow-y: auto;
+  
+  padding: 1px;
+  margin-bottom: 50px;
+ 
+}
+
+
+.records-section {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* soft background */
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+}
+
+
+.record-item-income{
+  display: flex;
+  justify-content: space-between;
+  margin: 0.1rem 0;
+  font-size: 0.9rem;
+  background: linear-gradient(to bottom right, #ffffff, #f3f4f6);
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.record-item-expense{
+  display: flex;
+  justify-content: space-between;
+  margin: 0.1rem 0;
+  font-size: 0.9rem;
+  background: linear-gradient(to bottom right, #ffffff, #f3f4f6);
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+.record-item-income:hover {
+  transform: translateY(-3px);
+}
+.record-item-expense:hover {
+  transform: translateY(-3px);
+}
+.record-item-income {
+  border-left: 6px solid #10b981;
+}
+
+.record-item-expense {
+  border-left: 6px solid #ef4444;
+}
+
+.date {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  
+}
+
+ .account {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+ .category {
+  color: #4b5563;
+  font-size: 0.95rem;
+ 
+}
+
+ .amount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  
+  display: inline-block;
+}
+
+.record-item-income .amount {
+  color: #059669;
+}
+
+.record-item-expense .amount {
+  color: #dc2626;
+}
+.expensetol{
+  color: #dc2626;
+}
+.incometol{
+  color: #059669;
+}
+.balancetol{
+  color: #059669;
+}
+  
+  /* Ensure layout consistency on mobile */
+@media (max-width: 700px) {
+    .tracker-container {
+      padding: 10px;
+    }
+  
+    .header,
+    .tabs,
+    .table-header,
+    .data-row,
+    .bottom-nav {
+      width: 100%;
+    }
+  
+    .search-input {
+      width: 100%;
+      font-size: 14px;
+    }
+  
+    .tab {
+      font-size: 14px;
+      padding: 8px 12px;
+    }
+  
+    .table-header span,
+    .data-row span {
+      font-size: 14px;
+    }
+  
+    .bottom-nav {
+      font-size: 12px;
+      justify-content: space-between;
+    }
+  }
+  .table-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.active-tab {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+
+/* calendar style */
+.react-calendar {
+  width: 320px;
+  max-width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 3000;
+  padding: 10px;
+}
+
+.react-calendar__tile {
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e0e7ff;
+}
+
+.react-calendar__tile--active {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.react-calendar__navigation button {
+  color: #2563eb;
+  font-weight: bold;
+}
+.calendar-dropdown {
+  position: absolute;
+  z-index: 99999 !important; /* super high priority */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 5px;
+  width: 250px; 
+  max-width: 90%;
+}
+
+@media (max-width: 480px) {
+  .react-calendar {
+    width: 100% !important;
+  }
+  .react-calendar__tile {
+    padding: 0.5rem 0.3rem;
+  }
+}
+@media (max-width: 480px) {
+  .calendar-dropdown {
+    left: 5% !important;
+    width: 90% !important;
+  }
+}

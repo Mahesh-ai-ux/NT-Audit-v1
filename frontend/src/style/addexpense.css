@@ -1,0 +1,101 @@
+.add-expense-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: 'Segoe UI', sans-serif;
+    
+   
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    color: #333;
+  }
+  
+  /* Button Group */
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .btn-record {
+    flex: 1 1 30%;
+    padding: 0.75rem 0;
+    border: 2px solid #3498db;
+    background-color: #fff;
+    color: #3498db;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    text-align: center;
+  }
+  
+  .btn-record:hover {
+    background-color: #3498db;
+    color: #fff;
+  }
+  
+  .btn-record.active {
+    background-color: #3498db;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  /* Expense Table */
+  .expense-table {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .table-body {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #e2e8f0;
+  }
+  
+  .table-body > div {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .table-body > div:nth-child(even) {
+    background-color: #f9fafb;
+  }
+  .close-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #444;
+}
+.close-button:hover {
+  color: #ff4d4d;
+}
+  
+  /* Responsive tweaks */
+  @media (max-width: 360px) {
+    .btn-record {
+      flex: 1 1 100%;
+      font-size: 0.9rem;
+      padding: 0.6rem 0;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+  }

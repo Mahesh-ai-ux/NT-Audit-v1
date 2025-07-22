@@ -1,0 +1,72 @@
+/* budget.css */
+
+.budget-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.budget-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+select,
+input[type="number"] {
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #fff;
+}
+
+button[type="submit"] {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 600px) {
+  .budget-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  button[type="submit"] {
+    font-size: 0.95rem;
+  }
+
+  select,
+  input[type="number"] {
+    font-size: 0.95rem;
+  }
+}

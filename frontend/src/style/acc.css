@@ -1,0 +1,88 @@
+.account-summary {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  
+
+}
+
+.account-summary h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  color: #0d47a1;
+  font-weight: 700;
+}
+
+.account-header-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #1565c0;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.account-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.account-card {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.account-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+}
+
+.account-card .type {
+  font-weight: 600;
+  color: #1565c0;
+}
+
+.account-card .income {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.account-card .expense {
+  color: #c62828;
+  font-weight: 600;
+}
+
+.account-card .balance {
+  color: #0d47a1;
+  font-weight: 600;
+}
+
+.account-card .balance.negative {
+  color: #c62828;
+}
+
+@media (max-width: 300px) {
+  .account-header-row,
+  .account-card {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+  }
+  .account-header-row span:nth-child(3),
+  .account-header-row span:nth-child(4),
+  .account-card span:nth-child(3),
+  .account-card span:nth-child(4) {
+    grid-column: span 2;
+  }
+}

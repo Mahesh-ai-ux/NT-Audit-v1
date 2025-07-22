@@ -1,0 +1,220 @@
+.analysis-container {
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.toggle-buttons,
+.view-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.toggle-buttons button,
+.view-buttons button {
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-buttons button.active,
+.view-buttons button.active {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.chart-section {
+  margin-bottom: 40px;
+}
+
+.category-title {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  text-transform: capitalize;
+}
+
+
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+}
+
+.color-box {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.category-name {
+  flex: 2;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.category-amount {
+  flex: 1;
+  text-align: right;
+  color: #222;
+  font-weight: bold;
+}
+
+.category-percent {
+  flex: 1;
+  text-align: right;
+  color: #777;
+  font-size: 14px;
+}
+.switch-button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.toggle-wrapper {
+  padding: 12px;
+  border-radius: 50px;
+  background-color: #f0f4f8;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-wrapper:hover {
+  background-color: #dbeafe;
+  transform: scale(1.1);
+}
+
+.switch-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+}
+.custom-toggle-switch {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.toggle-box {
+  display: flex;
+  width: 200px;
+  height: 45px;
+  background-color: #e5e7eb;
+  border-radius: 50px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.show {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  color: #374151;
+}
+
+.income-btn.active {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: white;
+}
+
+.expense-btn.active {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+  color: white;
+}
+
+.income-btn:not(.active):hover,
+.expense-btn:not(.active):hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.chart-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: nowrap; /* force side by side */
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.list-container {
+  flex: 0 0 50%; /* take half */
+  max-width: 50%;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.chart-container {
+  flex: 0 0 50%; /* take half */
+  max-width: 50%;
+  height: 280px; /* default for larger screens */
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* ✅ Adjust for tablets and mobile */
+@media (max-width: 768px) {
+  .list-container {
+    flex: 0 0 48%; /* slightly less */
+    max-width: 50%;
+  }
+  .chart-container {
+    flex: 0 0 48%;
+    max-width: 48%;
+    height: 180px; /* reduce height */
+  }
+
+  .category-item {
+    font-size: 12px;
+    padding: 4px 2px;
+  }
+  .category-name {
+    font-size: 12px;
+  }
+  .category-amount,
+  .category-percent {
+    font-size: 11px;
+  }
+}
+
+/* ✅ Extra small devices */
+@media (max-width: 480px) {
+  .list-container {
+    flex: 0 0 60%;
+    max-width: 60%;
+  }
+  .chart-container {
+    flex: 0 0 40%;
+    max-width: 40%;
+    height: 150px;
+  }
+}
