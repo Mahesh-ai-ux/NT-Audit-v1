@@ -14,7 +14,11 @@ const app = express();
 
 // 👇 Increase the body size limit (e.g., 10mb)
 app.use(express.json({ limit: '10mb' }));
-app.use(cors());
+app.use(cors({
+  origin: 'http://18.60.221.225:3000',
+  credentials: true
+}));
+
 app.use(express.json());
 app.use('/api/income', incomeRoutes);
 app.use('/api/expense',expenseRoutes);
@@ -28,8 +32,8 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+.then(() => console.log('MongoDB connected - server.js:35'))
+.catch(err => console.error('MongoDB connection error: - server.js:36', err));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT} - server.js:39`));

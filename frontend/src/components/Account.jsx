@@ -7,15 +7,18 @@ const Account = () => {
   const [accounts, setAccounts] = useState([]);
   const [formData, setFormData] = useState({ accountType: '' });
   const [editId, setEditId] = useState(null);
+  const navigate = useNavigate();
+
+  const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
   const fetchAccounts = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/account');
+      const res = await axios.get(`${BASE_URL}/api/account`);
       setAccounts(res.data);
     } catch (err) {
       console.error('Error fetching accounts:', err);
     }
-  }
+  };
 
   useEffect(() => {
     fetchAccounts();
@@ -28,7 +31,7 @@ const Account = () => {
   const handleAdd = async () => {
     if (!formData.accountType.trim()) return;
     try {
-      await axios.post('http://localhost:5000/api/account', formData);
+      await axios.post(`${BASE_URL}/api/account`, formData);
       setFormData({ accountType: '' });
       fetchAccounts();
     } catch (err) {
@@ -38,7 +41,7 @@ const Account = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/account/${id}`);
+      await axios.delete(`${BASE_URL}/api/account/${id}`);
       fetchAccounts();
     } catch (err) {
       console.error('Error deleting account:', err);
@@ -52,7 +55,7 @@ const Account = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/account/${editId}`, formData);
+      await axios.put(`${BASE_URL}/api/account/${editId}`, formData);
       setFormData({ accountType: '' });
       setEditId(null);
       fetchAccounts();
@@ -60,10 +63,9 @@ const Account = () => {
       console.error('Error updating account:', err);
     }
   };
-  const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1); // Goes back to the previous page
+    navigate(-1); // Go back to previous page
   };
 
   return (

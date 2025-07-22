@@ -51,7 +51,7 @@ const Expense = () => {
     // Fetch account types for the dropdown
     const fetchAccounts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/account');
+        const response = await axios.get('http://18.60.221.225:5000/api/account');
         setAccounts(response.data);
       } catch (err) {
         console.error('Failed to fetch accounts', err);
@@ -64,7 +64,7 @@ const Expense = () => {
     // Fetch category types for the dropdown
     const fetchCategorys = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/category');
+        const response = await axios.get('http://18.60.221.225:5000/api/category');
         setCategorys(response.data);
       } catch (err) {
         console.error('Failed to fetch category', err);
@@ -95,8 +95,8 @@ const handleSubmit = async (e, clearForm = false) => {
   try {
     // Get balances
     const [incomeRes, expenseRes] = await Promise.all([
-      axios.get('http://localhost:5000/api/income'),
-      axios.get('http://localhost:5000/api/expense'),
+      axios.get('http://18.60.221.225:5000/api/income'),
+      axios.get('http://18.60.221.225:5000/api/expense'),
     ]);
 
     const selectedAccount = formData.accountType;
@@ -125,7 +125,7 @@ const month = new Date(formData.date).getMonth() + 1;
 const year = new Date(formData.date).getFullYear();
 
 // Fetch Budget
-const budgetRes = await axios.get('http://localhost:5000/api/budget', {
+const budgetRes = await axios.get('http://18.60.221.225:5000/api/budget', {
   params: {
     accountType: formData.accountType,
     category: formData.category,
@@ -137,7 +137,7 @@ const budgetData = budgetRes.data;
 const categoryBudget = budgetData?.budgetAmount || 0;
 
 // Get total spent so far in this category this month
-const expensesRes = await axios.get('http://localhost:5000/api/expense');
+const expensesRes = await axios.get('http://18.60.221.225:5000/api/expense');
 const monthlyCategoryTotal = expensesRes.data
   .filter(e =>
     e.accountType === formData.accountType &&
@@ -165,7 +165,7 @@ if (categoryBudget > 0 && newTotal > categoryBudget) {
 
     // balance is enough, post
     const payload = { ...formData, photo: image };
-    const response = await fetch('http://localhost:5000/api/expense/add-expense', {
+    const response = await fetch('http://18.60.221.225:5000/api/expense/add-expense', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

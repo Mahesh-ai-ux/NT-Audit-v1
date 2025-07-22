@@ -4,21 +4,23 @@ import '../style/income.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const Income = () => {
+const API = import.meta.env.VITE_BACKEND_URL;
 
+const Income = () => {
   const getCurrentDateTime = () => {
-  const now = new Date();
-  const offset = now.getTimezoneOffset();
-  const local = new Date(now.getTime() - offset * 60000);
-  return local.toISOString().slice(0, 16); // Returns "YYYY-MM-DDTHH:mm"
-};
+    const now = new Date();
+    const offset = now.getTimezoneOffset();
+    const local = new Date(now.getTime() - offset * 60000);
+    return local.toISOString().slice(0, 16);
+  };
+
   const [formData, setFormData] = useState({
     accountType: '',
     category: '',
     amount: '',
     notes: '',
     photo: '',
-    date: getCurrentDateTime(), // ← correct format,
+    date: getCurrentDateTime(),
   });
 
   const [errors, setErrors] = useState({});
@@ -26,12 +28,11 @@ const Income = () => {
   const [categorys, setCategorys] = useState([]);
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
-//  Add this function to format the current date and time
 
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/account');
+        const response = await axios.get(`${API}/api/account`);
         setAccounts(response.data);
       } catch (err) {
         console.error('Failed to fetch accounts', err);
@@ -43,7 +44,7 @@ const Income = () => {
   useEffect(() => {
     const fetchCategorys = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/category');
+        const response = await axios.get(`${API}/api/category`);
         setCategorys(response.data);
       } catch (err) {
         console.error('Failed to fetch categories', err);
@@ -51,8 +52,6 @@ const Income = () => {
     };
     fetchCategorys();
   }, []);
-
-
 
   const handleSubmit = async (e, clearForm = false) => {
     e.preventDefault();
@@ -73,17 +72,14 @@ const Income = () => {
     const payload = { ...formData, photo: image };
 
     try {
-      const response = await fetch('http://localhost:5000/api/income', {
+      const response = await fetch(`${API}/api/income`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-       await Swal.fire({
-               icon: 'success',
-               title: 'Income saved successfully!',
-             });
+        await Swal.fire({ icon: 'success', title: 'Income saved successfully!' });
         if (clearForm) {
           setFormData({
             accountType: '',
@@ -91,22 +87,16 @@ const Income = () => {
             amount: '',
             notes: '',
             photo: '',
-            date: getCurrentDateTime(), // ← correct format,
+            date: getCurrentDateTime(),
           });
           setImage(null);
         }
       } else {
-        await Swal.fire({
-               icon: 'error',
-               title: 'Failed to save Income',
-             });
+        await Swal.fire({ icon: 'error', title: 'Failed to save Income' });
       }
     } catch (err) {
       console.error(err);
-      await Swal.fire({
-           icon: 'error',
-           title: 'Something went wrong!',
-         });
+      await Swal.fire({ icon: 'error', title: 'Something went wrong!' });
     }
   };
 
@@ -132,7 +122,7 @@ const Income = () => {
       amount: '',
       notes: '',
       photo: '',
-      date: getCurrentDateTime(), // ← correct format
+      date: getCurrentDateTime(),
     });
     setImage(null);
     navigate('/');
@@ -142,7 +132,7 @@ const Income = () => {
     <div>
       <br /><br />
       <form onSubmit={handleSubmit}>
-        {/* account type  */}
+        {/* Account */}
         <div className="form-group">
           <label>Account</label>
           <select
@@ -160,7 +150,8 @@ const Income = () => {
           </select>
           {errors.accountType && <div className="error-text">{errors.accountType}</div>}
         </div>
-            {/* Category */}
+
+        {/* Category */}
         <div className="form-group">
           <label>Category</label>
           <select
@@ -178,7 +169,8 @@ const Income = () => {
           </select>
           {errors.category && <div className="error-text">{errors.category}</div>}
         </div>
-            {/* amount */}
+
+        {/* Amount */}
         <div className="form-group">
           <label>Amount</label>
           <input
@@ -191,7 +183,8 @@ const Income = () => {
           />
           {errors.amount && <div className="error-text">{errors.amount}</div>}
         </div>
-{/* notes */}
+
+        {/* Notes */}
         <div className="form-group">
           <label>Notes</label>
           <textarea
@@ -199,37 +192,18 @@ const Income = () => {
             value={formData.notes}
             onChange={handleChange}
             placeholder="Enter any notes here"
-            className={errors.notes ? 'input-error' : ''}
           />
-          {errors.notes && <div className="error-text">{errors.notes}</div>}
         </div>
-{/* photo */}
+
+        {/* Photo */}
         <div className="form-group">
           <label>Photo</label>
           <div className="photo-buttons">
-            <input
-              type="file"
-              accept="image/*"
-              id="gallery-input"
-              onChange={handleImageChange}
-              style={{ display: 'none' }}
-            />
+            <input type="file" accept="image/*" id="gallery-input" onChange={handleImageChange} style={{ display: 'none' }} />
             <label htmlFor="gallery-input" className="photo-btn">Gallery</label>
-            <button
-              type="button"
-              className="photo-btn"
-              onClick={() => document.getElementById('camera-input').click()}
-            >Camera</button>
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              id="camera-input"
-              onChange={handleImageChange}
-              style={{ display: 'none' }}
-            />
+            <button type="button" className="photo-btn" onClick={() => document.getElementById('camera-input').click()}>Camera</button>
+            <input type="file" accept="image/*" capture="environment" id="camera-input" onChange={handleImageChange} style={{ display: 'none' }} />
           </div>
-          {errors.image && <div className="error-text">{errors.image}</div>}
         </div>
 
         {image && (
@@ -237,7 +211,8 @@ const Income = () => {
             <img src={image} alt="Uploaded" width="100" height="100" />
           </div>
         )}
-{/* date and time */}
+
+        {/* Date & Time */}
         <div className="form-group">
           <label>Date & Time</label>
           <input
@@ -250,6 +225,7 @@ const Income = () => {
           {errors.date && <div className="error-text">{errors.date}</div>}
         </div>
 
+        {/* Buttons */}
         <div className="form-buttons">
           <button type="submit" className="btn-save-continue" onClick={(e) => handleSubmit(e, true)}>Save</button>
           <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>

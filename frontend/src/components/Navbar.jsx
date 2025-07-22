@@ -7,10 +7,12 @@ import '../style/navbar.css';
 import logoImg from '../assets/log.png';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_BACKEND_URL;
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [showSidebar, setShowSidebar] = useState(false);
-  const [filter, setFilter] = useState('weekly'); // default to weekly
+  const [filter, setFilter] = useState('weekly');
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const calendarButtonRef = useRef(null);
@@ -30,17 +32,19 @@ const Navbar = () => {
   const handleAnalysisClick = () => navigate('/analysis');
   const handleAccountsClick = () => navigate('/accounts');
   const handleNavbarClick = () => navigate('/navbar');
-  const handleBudgetClick= () => { navigate('/budget')};
+  const handleBudgetClick = () => navigate('/budget');
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const incomeRes = await axios.get('http://localhost:5000/api/income');
-      const expenseRes = await axios.get('http://localhost:5000/api/expense');
+      const incomeRes = await axios.get(`${API}/api/income`);
+      const expenseRes = await axios.get(`${API}/api/expense`);
       setIncomes(incomeRes.data);
       setExpenses(expenseRes.data);
+
       const incomeSum = incomeRes.data.reduce((sum, item) => sum + Number(item.amount), 0);
       const expenseSum = expenseRes.data.reduce((sum, item) => sum + Number(item.amount), 0);
       setIncomeTotal(incomeSum);
@@ -51,12 +55,7 @@ const Navbar = () => {
     }
   };
 
-  // Filter helpers
-  const isToday = (date) => {
-    const d = new Date(date);
-    const today = new Date();
-    return d.toDateString() === today.toDateString();
-  };
+  const isToday = (date) => new Date(date).toDateString() === new Date().toDateString();
 
   const isThisWeek = (date) => {
     const now = new Date();
@@ -78,14 +77,10 @@ const Navbar = () => {
       return data.filter((item) => new Date(item.date).toDateString() === selectedDate.toDateString());
     }
     switch (filter) {
-      case 'today':
-        return data.filter((item) => isToday(item.date));
-      case 'weekly':
-        return data.filter((item) => isThisWeek(item.date));
-      case 'monthly':
-        return data.filter((item) => isThisMonth(item.date));
-      default:
-        return data;
+      case 'today': return data.filter((item) => isToday(item.date));
+      case 'weekly': return data.filter((item) => isThisWeek(item.date));
+      case 'monthly': return data.filter((item) => isThisMonth(item.date));
+      default: return data;
     }
   };
 
@@ -101,7 +96,6 @@ const Navbar = () => {
     return acc;
   }, {});
 
-  // responsive calendar placement
   useEffect(() => {
     function handleClickOutside(e) {
       if (calendarRef.current && !calendarRef.current.contains(e.target) && !calendarButtonRef.current.contains(e.target)) {
@@ -116,15 +110,12 @@ const Navbar = () => {
 
   return (
     <div className="tracker-container">
-
-      {/* Sidebar */}
       <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
         <button onClick={() => setShowSidebar(false)} className="close-btn">×</button>
         <button className="category-btn" onClick={handleAccountClick}>Account</button>
         <button className="category-btn" onClick={handleCategoryClick}>Category</button>
       </div>
 
-      {/* Header */}
       <div className="header-container">
         <div className="header">
           <Menu className="icon" onClick={toggleSidebar} />
@@ -135,7 +126,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="tabs fixed-tabs">
           <button className={`tab ${filter === 'today' ? 'active-tab' : ''}`} onClick={() => { setFilter('today'); setSelectedDate(null); }}>Today</button>
           <button className={`tab ${filter === 'weekly' ? 'active-tab' : ''}`} onClick={() => { setFilter('weekly'); setSelectedDate(null); }}>Weekly</button>
@@ -152,18 +142,17 @@ const Navbar = () => {
             <div
               className="calendar-dropdown"
               ref={calendarRef}
-               style={{
+              style={{
                 position: "absolute",
                 top: calendarButtonRef.current
-                ? calendarButtonRef.current.offsetTop +
-                calendarButtonRef.current.offsetHeight +
-                4
-                : 0,
+                  ? calendarButtonRef.current.offsetTop +
+                    calendarButtonRef.current.offsetHeight + 4
+                  : 0,
                 left: 0,
                 right: 0,
                 margin: "0 auto",
                 maxWidth: "320px",
-                 }}
+              }}
             >
               <Calendar
                 onChange={(date) => {
@@ -174,13 +163,11 @@ const Navbar = () => {
                 value={selectedDate}
                 next2Label={null}
                 prev2Label={null}
-                
               />
             </div>
           )}
         </div>
 
-        {/* Summary */}
         <div className="table-header fixed-table">
           <div className="summary-item">
             <span>Income</span>
@@ -197,7 +184,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Records */}
       <div className="records-container">
         {Object.keys(groupedByDate).length > 0 ? (
           Object.keys(groupedByDate).map(date => (
@@ -219,7 +205,6 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Bottom Nav */}
       <div className="bottom-nav">
         <div onClick={handleNavbarClick}><List className="bottom-icon" /> Transaction</div>
         <div onClick={handleAnalysisClick}><BarChart2 className="bottom-icon" /> Analysis</div>
@@ -228,7 +213,6 @@ const Navbar = () => {
         <div onClick={handleBudgetClick}><DollarSign className="bottom-icon" /> Budget</div>
       </div>
 
-      {/* FAB */}
       <button className="fab-button" onClick={handleAddClick}>
         <Plus className="fab-icon" />
       </button>

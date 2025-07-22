@@ -1,98 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import '../style/accounts.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import '../style/category.css';
+
+const API = import.meta.env.VITE_BACKEND_URL;
 
 const Category = () => {
-  const [categorys, setCategorys] = useState([]);
-  const [formData, setFormData] = useState({ categoryType: '' });
-  const [editId, setEditId] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState('');
+  const [type, setType] = useState('income');
 
-  const fetchCategorys = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/api/category');
-      setCategorys(res.data);
-    } catch (err) {
-      console.error('Error fetching categorys:', err);
-    }
+  const fetchCategories = async () => {
+    const res = await axios.get(`${API}/api/category`);
+    setCategories(res.data);
   };
 
-  useEffect(() => {
-    fetchCategorys();
-  }, []);
+  useEffect(() => { fetchCategories(); }, []);
 
-  const handleChange = (e) => {
-    setFormData({ categoryType: e.target.value });
-  };
-
-  const handleAdd = async () => {
-    if (!formData.categoryType.trim()) return;
-    try {
-      await axios.post('http://localhost:5000/api/category', formData);
-      setFormData({ categoryType: '' });
-      fetchCategorys();
-    } catch (err) {
-      console.error('Error adding category:', err);
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!category.trim()) return;
+    await axios.post(`${API}/api/category`, { category, type });
+    setCategory('');
+    fetchCategories();
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/category/${id}`);
-      fetchCategorys();
-    } catch (err) {
-      console.error('Error deleting category:', err);
-    }
-  };
-
-  const handleEdit = (id, type) => {
-    setEditId(id);
-    setFormData({ categoryType: type });
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await axios.put(`http://localhost:5000/api/category/${editId}`, formData);
-      setFormData({ categoryType: '' });
-      setEditId(null);
-      fetchCategorys();
-    } catch (err) {
-      console.error('Error updating category:', err);
-    }
-  };
-   const navigate = useNavigate();
-   const goBack = () => {
-    navigate(-1); // Goes back to the previous page
+    await axios.delete(`${API}/api/category/${id}`);
+    fetchCategories();
   };
 
   return (
-    <div className="accounts-container">
-       <button onClick={goBack} className="back-button">
-        ← Back
-      </button>
-      <h2>Manage Categorys</h2>
-
-      <div className="account-form">
-        <input
-          type="text"
-          name="categoryType"
-          placeholder="Enter category type"
-          value={formData.categoryType}
-          onChange={handleChange}
-        />
-        {editId ? (
-          <button onClick={handleUpdate}>Update</button>
-        ) : (
-          <button onClick={handleAdd}>Add Item</button>
-        )}
-      </div>
-
-      <ul className="account-list">
-        {categorys.map((category) => (
-          <li key={category._id}>
-            {category.categoryType}
-            <button onClick={() => handleEdit(category._id, category.categoryType)}>Edit</button>
-            <button onClick={() => handleDelete(category._id)}>Delete</button>
+    <div className="category-container">
+      <h2>Manage Categories</h2>
+      <form onSubmit={handleSubmit}>
+        <input value={category} onChange={e => setCategory(e.target.value)} placeholder="Category" />
+        <select value={type} onChange={e => setType(e.target.value)}>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+        <button type="submit">Add</button>
+      </form>
+      <ul className="category-list">
+        {categories.map((cat) => (
+          <li key={cat._id}>
+            {cat.category} ({cat.type})
+            <button onClick={() => handleDelete(cat._id)}>❌</button>
           </li>
         ))}
       </ul>

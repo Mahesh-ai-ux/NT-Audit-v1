@@ -4,43 +4,40 @@ import axios from 'axios';
 import '../style/income.css';
 import Swal from 'sweetalert2';
 
+const API = import.meta.env.VITE_BACKEND_URL;
+
 const Transaction = () => {
   const getCurrentDateTime = () => {
-  const now = new Date();
-  const offset = now.getTimezoneOffset();
-  const local = new Date(now.getTime() - offset * 60000);
-  return local.toISOString().slice(0, 16); // Returns "YYYY-MM-DDTHH:mm"
-  }
+    const now = new Date();
+    const offset = now.getTimezoneOffset();
+    const local = new Date(now.getTime() - offset * 60000);
+    return local.toISOString().slice(0, 16);
+  };
+
   const [formData, setFormData] = useState({
     from: '',
     to: '',
     amount: '',
     notes: '',
-    date: getCurrentDateTime(), // ← correct format // Default date & time
+    date: getCurrentDateTime(),
   });
+
   const [accounts, setAccounts] = useState([]);
   const [errors, setErrors] = useState({});
-   useEffect(() => {
-      // Fetch account types for the dropdown
-      const fetchAccounts = async () => {
-        try {
-          const response = await axios.get('http://localhost:5000/api/account');
-          setAccounts(response.data);
-        } catch (err) {
-          console.error('Failed to fetch accounts', err);
-        }
-      };
-  
-      fetchAccounts();
-    }, []);
-    //old date get format
-  // useEffect(() => {
-  //   const now = new Date();
-  //   setFormData(prev => ({
-  //     ...prev,
-  //     date: now.toISOString().slice(0, 16)
-  //   }));
-  // }, []);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const response = await axios.get(`${API}/api/account`);
+        setAccounts(response.data);
+      } catch (err) {
+        console.error('Failed to fetch accounts', err);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,11 +46,11 @@ const Transaction = () => {
   const handleSubmit = async (e, clearForm = false) => {
     e.preventDefault();
 
-      const newErrors = {};
-    const { from, to, amount, notes, date } = formData;
+    const newErrors = {};
+    const { from, to, amount, date } = formData;
 
-    if (!from) newErrors.accountType = "Please select an from acc";
-    if (!to) newErrors.category = "Please select a to acc";
+    if (!from) newErrors.from = "Please select a from account";
+    if (!to) newErrors.to = "Please select a to account";
     if (!amount) newErrors.amount = "Please enter an amount";
     if (!date) newErrors.date = "Please select date and time";
 
@@ -68,37 +65,42 @@ const Transaction = () => {
     }
 
     setErrors({});
-    const payload = { ...formData };
-  
     try {
-      const response = await fetch('http://localhost:5000/api/transaction/add-transaction', {
+      const response = await fetch(`${API}/api/transaction/add-transaction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
-        alert('transaction saved successfully');
+        await Swal.fire({
+          icon: 'success',
+          title: 'Transaction saved successfully!',
+        });
+
         if (clearForm) {
           setFormData({
             from: '',
             to: '',
             amount: '',
             notes: '',
-            date: new Date().toISOString().slice(0, 16),
+            date: getCurrentDateTime(),
           });
-          
         }
       } else {
-        alert('Failed to save transaction');
+        await Swal.fire({
+          icon: 'error',
+          title: 'Failed to save transaction',
+        });
       }
     } catch (err) {
       console.error(err);
-      alert('Error saving transaction');
+      await Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong!',
+      });
     }
   };
-
-  const navigate = useNavigate();
 
   const handleCancel = () => {
     setFormData({
@@ -106,121 +108,53 @@ const Transaction = () => {
       to: '',
       amount: '',
       notes: '',
-      date: getCurrentDateTime(), // ← correct format
+      date: getCurrentDateTime(),
     });
     navigate('/');
   };
 
   return (
-    <div >
+    <div>
       <br /><br />
-      
       <form onSubmit={handleSubmit}>
         {/* From */}
-        {/* <div className="form-group">
+        <div className="form-group">
           <label>From</label>
-           <select
-            name="from"
-            value={formData.from}
-            onChange={handleChange}
-          >
-             <option value="">From Acc</option>
-             {accounts.map(account => (
-              <option key={account._id} value={account.accountType}>
-               {account.accountType}
-             </option>
-        ))}
-          </select>
-        </div>
-         */}
-        {/* To */}
-        {/* <div className="form-group">
-          <label>To</label>
           <select
-            name="to"
-            value={formData.to}
-            onChange={handleChange}
-          >
-             <option value="">To Acc</option>
-             {accounts.map(account => (
-              <option key={account._id} value={account.accountType}>
-               {account.accountType}
-             </option>
-        ))}
-          </select>
-        </div> */}
-        
-        {/* Amount */}
-        {/* <div className="form-group">
-          <label>Amount</label>
-          <input
-            type="number"
-            name="amount"
-            value={formData.amount}
-            onChange={handleChange}
-            placeholder="Enter amount"
-          />
-        </div> */}
-
-        {/* Notes */}
-        {/* <div className="form-group">
-          <label>Notes</label>
-          <textarea
-            name="notes"
-            value={formData.notes}
-            onChange={handleChange}
-            placeholder="Enter any notes here"
-          />
-        </div> */}
-
-        {/* Date & Time */}
-      {/* <div className="form-group">
-        <label>Date & Time</label>
-        <input
-        type="datetime-local"
-        name="date"
-        value={formData.date}
-        onChange={handleChange}
-      />
-      </div> */}
-
-        {/* form Type */}
-         <div className="form-group">
-          <label>From</label>
-           <select
             name="from"
             value={formData.from}
             onChange={handleChange}
             className={errors.from ? 'input-error' : ''}
           >
-             <option value="">From Acc</option>
-             {accounts.map(account => (
+            <option value="">From Acc</option>
+            {accounts.map(account => (
               <option key={account._id} value={account.accountType}>
-               {account.accountType}
-             </option>
-        ))}
+                {account.accountType}
+              </option>
+            ))}
           </select>
-           {errors.from && <div className="error-text">{errors.from}</div>}
+          {errors.from && <div className="error-text">{errors.from}</div>}
         </div>
-          {/* to type choose */}
+
+        {/* To */}
         <div className="form-group">
           <label>To</label>
           <select
             name="to"
             value={formData.to}
             onChange={handleChange}
-             className={errors.to ? 'input-error' : ''}
+            className={errors.to ? 'input-error' : ''}
           >
-             <option value="">To Acc</option>
-             {accounts.map(account => (
+            <option value="">To Acc</option>
+            {accounts.map(account => (
               <option key={account._id} value={account.accountType}>
-               {account.accountType}
-             </option>
-        ))}
+                {account.accountType}
+              </option>
+            ))}
           </select>
-           {errors.to && <div className="error-text">{errors.to}</div>}
+          {errors.to && <div className="error-text">{errors.to}</div>}
         </div>
-        
+
         {/* Amount */}
         <div className="form-group">
           <label>Amount</label>
@@ -247,8 +181,9 @@ const Transaction = () => {
           />
           {errors.notes && <div className="error-text">{errors.notes}</div>}
         </div>
+
         {/* Date & Time */}
-    <div className="form-group">
+        <div className="form-group">
           <label>Date & Time</label>
           <input
             type="datetime-local"
@@ -262,7 +197,7 @@ const Transaction = () => {
 
         {/* Buttons */}
         <div className="form-buttons">
-          <button type="button" className="btn-save" onClick={(e) => handleSubmit(e, false)}>Save</button>
+          <button type="button" className="btn-save" onClick={(e) => handleSubmit(e, true)}>Save</button>
           <button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</button>
         </div>
       </form>
